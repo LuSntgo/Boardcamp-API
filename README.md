@@ -1,8 +1,8 @@
-<h1 align="center">  :sparkles: MyPhoneList  :sparkles:  &nbsp  
+<h1 align="center">  Boardcamp  🎲  &nbsp  
 
 </h1>
 
-## About
+## 🎲 About
 
 Boardcamp is a management system of a board game store!
 
