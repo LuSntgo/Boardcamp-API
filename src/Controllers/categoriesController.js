@@ -11,37 +11,18 @@ export async function getCategories(req, res) {
 }
 
 
-export async function getCategory(req, res) {
-  const { id } = req.body;
+export async function addCategory(req, res) {
+  const {name} = req.body;
+  
   try {
-    const { rows: games } = await db.query(
-      `
-    SELECT * FROM games
-    WHERE id=$1`,
-      [id]
-    );
-
-    if (games.length === 0) {
-      res.sendStatus(404);
-      return;
-    }
-    res.send(games[0]);
+    await db.query(`
+      INSERT INTO categories (name)
+      VALUES ($1), [name]
+      `);
+    res.sendStatus(201);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 }
-
-// export async function addCategory(req, res) {
-//   try {
-//     await db.query(`
-//       INSERT INTO games (id, name, image, stockTotal, categoryId, pricePerDay, categoryName)
-//       VALUES ($1, $2, $3, $4, $5, $6, $7)
-//       `);
-//     res.sendStatus(201);
-//   } catch (error) {
-//     console.log(error);
-//     res.sendStatus(500);
-//   }
-// }
 

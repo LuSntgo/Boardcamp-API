@@ -1,13 +1,11 @@
 import joi from "joi";
 
-const gamesSchema = joi.object({
-  id: joi.number().required(),
+const gameSchema = joi.object({
   name: joi.string().required(),
   image: joi.string().required(),
-  stockTotal: joi.number().required(),
+  stockTotal: joi.string().required(),
   categoryId: joi.number().required(),
-  pricePerDay: joi.number().required(),
-  categoryName: joi.string().required(),
+  pricePerDay: joi.string().required(),
 });
 
-export default gamesSchema;
+export default gameSchema;
