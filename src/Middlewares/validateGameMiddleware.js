@@ -1,10 +1,12 @@
 import db from "../db.js";
 import gameSchema from "../schemas/gameSchema.js";
 
+
 export default async function validateGameMiddleware(req, res, next) {
   const validation = gameSchema.validate(req.body);
 
   if (validation.error) {
+    console.log("aqui");
     return res.sendStatus(422);
   }
 
@@ -24,10 +26,13 @@ export default async function validateGameMiddleware(req, res, next) {
     ]);
 
     if (category.rowCount === 0) {
+      console.log("aqu2i");
       return res.sendStatus(400);
+      
     }
 
     if (sameName.rowCount > 0) {
+      console.log("aqu3i");
       return res.sendStatus(409);
     }
     next();

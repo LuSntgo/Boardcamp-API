@@ -4,28 +4,34 @@ export async function getGames(req, res) {
   const { name } = req.query;
   try {
     if (!name) {
-      const { rows: games } = await db.query(
-        `
+      const { rows: games } = await db.query(`
         SELECT games.*, categories.name as "categoryName" FROM games 
-        WHERE LOWER (name) LIKE LOWER($1)
         JOIN categories ON games."categoryId"=categories.id
-      `
-      );
+      `);
       return res.send(games);
     }
 
-    const { rows: games } =
-      await db.query(`SELECT games.*, categories.name as "categoryName" FROM games 
-    JOIN categories ON games."categoryId"=categories.id 
-    WHERE games.name LIKE $1`
-    , [`${name}%`]);
-    res.send(games);
+    const { rows: games } = await db.query(`
+      SELECT 
+        games.*, 
+        categories.name as "categoryName" 
+      FROM games 
+      WHERE LOWER (name) LIKE LOWER($1)
+        JOIN categories ON games."categoryId"=categories.id 
+      WHERE games.name LIKE $1`,
+      [`${name}%`]
+    );
+
+    if(games.length===0){
+      res.sendStatus(404);
+      return
+    }
+    res.send(games[0]);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 }
-
 
 export async function addGame(req, res) {
   const { name, image, stockTotal, categoryId, pricePerDay } = req.body;

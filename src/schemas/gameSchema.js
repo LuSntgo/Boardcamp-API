@@ -4,7 +4,7 @@ const gameSchema = joi.object({
   name: joi.string().required(),
   image: joi.string().required(),
   stockTotal: joi.string().required(),
-  categoryId: joi.number().required(),
+  categoryId: joi.string().required(),
   pricePerDay: joi.string().required(),
 });
 
