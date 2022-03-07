@@ -1,21 +1,39 @@
+import db from "../db.js";
 import customersSchema from "../schemas/customersSchemas.js";
 
+export async function validateCustomersMiddleware(req, res, next) {
 
-export function validateCustomersMiddleware(req, res, next) {
-    const query = {
-      cpf: req.query.cpf,
-      name: req.query.name,
-      customerId: req.query.customerId,
-      gameId: req.query.gameId
-    }
-  
-    const validation = customersSchema.validate(query)
-    if (validation.error) {
-      console.error(validation.error.details[0].message)
-      return res.status(400).send("Os dados estão incorretos")
-    }
-  
-    res.locals.query = query
-  
-    next()
+  const validation = customersSchema.validate(req.body);
+  if (validation.error) {
+    return res.sendStatus(422);
   }
+  next()
+
+}
+
+export async function validateUpgradeCustomersMiddleware(req, res, next) {
+  const validation = customersSchema.validate(req.body);
+  if (validation.error) {
+    return res.sendStatus(422);
+  }
+
+  const { id } = req.params;
+  const { cpf } = req.body;
+  
+  try {         
+    const user = await db.query(`
+    SELECT *
+    FROM customers
+    WHERE cpf=$1
+    `, [cpf])
+
+if(user.rowCount > 0 && user.rows[0].id != id){
+  return res.sendStatus(409)
+}
+
+} catch (error) {
+    res.status(500).send(error.message);
+}
+
+next()
+}
