@@ -6,7 +6,6 @@ export default async function validateGameMiddleware(req, res, next) {
   const validation = gameSchema.validate(req.body);
 
   if (validation.error) {
-    console.log("aqui");
     return res.sendStatus(422);
   }
 
@@ -21,18 +20,15 @@ export default async function validateGameMiddleware(req, res, next) {
       categoryId,
     ]);
 
-    const sameName = await db.query("SELECT id from games WHERE name=$1", [
+    const repeatName = await db.query("SELECT id from games WHERE name=$1", [
       name,
     ]);
 
     if (category.rowCount === 0) {
-      console.log("aqu2i");
       return res.sendStatus(400);
-      
     }
 
-    if (sameName.rowCount > 0) {
-      console.log("aqu3i");
+    if (repeatName.rowCount > 0) {
       return res.sendStatus(409);
     }
     next();

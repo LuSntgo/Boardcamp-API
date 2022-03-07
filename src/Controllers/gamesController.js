@@ -49,9 +49,9 @@ export async function addGame(req, res) {
       [
         name,
         image,
-        stockTotal,
-        categoryId,
-        pricePerDay,
+        parseInt(stockTotal),
+        parseInt(categoryId),
+        parseInt(pricePerDay),
       ]);
     res.sendStatus(201);
   } catch (error) {

@@ -1,13 +1,12 @@
-// import { Router } from "express";
-// // import {
-// //   addCategory,
-// //   getCategories,
-// // } from "../controllers/categoriesController.js";
-// // import { validateCategoryMiddleware } from "../middlewares/validateCategoryMiddleware.js";
+import { Router } from "express";
+import { addCustomers, getCustomer, getCustomers, updateCustomer } from "../Controllers/customersController.js";
 
-// const costumersRouter = Router();
 
-// costumersRouter.get("/costumers", getCostumers);
-// // costumersRouter.post("/costumers", validateCategoryMiddleware, addCategory);
+const customersRouter = Router();
 
-// export default costumersRouter;
+customersRouter.get("/customers", getCustomers);
+customersRouter.get("/customers/:id", getCustomer);
+customersRouter.post("/customers", addCustomers);
+customersRouter.put("/customers/:id", updateCustomer);
+
+export default customersRouter;

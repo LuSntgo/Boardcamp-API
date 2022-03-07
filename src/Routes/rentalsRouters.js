@@ -1,10 +1,10 @@
-// import { Router } from "express";
-// import { addRentals } from "../Controllers/rentalsController.js";
+import { Router } from "express";
+import { addRentals, getRentals } from "../Controllers/rentalsController.js";
 
-// const rentalsRouter = Router();
+const rentalsRouter = Router();
 
-// rentalsRouter.post('/customers', addRentals)
-// rentalsRouter.get('/customers')
+rentalsRouter.post("/rentals", addRentals)
+rentalsRouter.get("/rentals", getRentals)
 
 
-// export default rentalsRouter;
+export default rentalsRouter;
