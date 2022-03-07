@@ -1,5 +1,7 @@
 import db from "../db.js";
 import dayjs from "dayjs";
+import Joi from "joi";
+import rentalSchema from "../schemas/rentalSchema.js";
 
 export async function getRentals(req, res) {
   const { customerId, gameId } = req.query;
@@ -8,13 +10,14 @@ export async function getRentals(req, res) {
     SELECT 
       rentals.*,
       customers.name AS "customerName",
-      customer.id AS "customerId",
+      customers.id AS "customerId",
       games.id AS "gameId",
-      games.name AS "gameName",
-      games."categoryId" categories.name AS "categoryName" 
+      games.name AS "gameName", 
+      categories.name AS "categoryName", 
+      categories.id AS "categoryId" 
     FROM rentals
       JOIN customers ON rentals."customerId" = customers.id
-      JOIN games ON rentals."gamesId" = games.id
+      JOIN games ON rentals."gameId" = games.id
       JOIN categories ON games."categoryId" = categories.id
       ${customerId ? `WHERE customers.id = ${parseInt(customerId)}` : ""}
       ${gameId ? `WHERE games.id = ${parseInt(gameId)}` : ""}
@@ -48,15 +51,22 @@ export async function getRentals(req, res) {
     });
     res.send(listRentals);
   } catch (error) {
+    console.log(error)
     res.sendStatus(500);
   }
 }
 
 export async function addRentals(req, res) {
+  const {error} = rentalSchema.validate(req.body);
+  if(error){
+    return res.sendStatus(400)
+  }
+
   const { customerId, gameId, daysRented } = req.body;
   const rentDate = dayjs().format("YYYY-MM-DD");
   const returnDate = null;
   const delayFee = null;
+
 
   try {
     const { rows: pricePerDay } = await db.query(
@@ -87,7 +97,6 @@ export async function addRentals(req, res) {
         delayFee,
       ]
     );
-
     res.sendStatus(201);
   } catch (error) {
     res.status(500).send(error);
@@ -108,10 +117,10 @@ export async function returnRental(req, res) {
   `,
       [id]
     );
-
     if (result.length === 0) {
-      return res.senStatus(404);
+      return res.sendStatus(404);
     }
+  
     if (result[0].returnDate !== null) {
       return res.sendStatus(400);
     }
@@ -130,8 +139,9 @@ export async function returnRental(req, res) {
   `,
       [returnDate, delayFee, id]
     );
-    res.senStatus(200);
+    res.sendStatus(200);
   } catch (error) {
+    console.log(error)
     res.status(500).send(error);
   }
 }
@@ -145,9 +155,11 @@ export async function deleteRental(req, res) {
     WHERE id = $1`,
       [id]);
 
-      if (rental.rows.length === 0) {
+      if (rental.length === 0) {
         return sendStatus(404);}
-    if (rental[0].returnDate !== null) {
+
+        console.log(rental[0].returnDate)
+    if (rental[0].returnDate) {
       return res.sendStatus(400)};
 
     await db.query(`
@@ -156,7 +168,8 @@ export async function deleteRental(req, res) {
     WHERE id=$1
     `,[id]);
     res.sendStatus(200);
-  } catch {
+  } catch(error) {
+    console.log(error)
     res.sendStatus(500);
   }
 }

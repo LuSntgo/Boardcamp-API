@@ -1,10 +1,13 @@
 import { Router } from "express";
-import { addRentals, getRentals } from "../Controllers/rentalsController.js";
+import { addRentals, deleteRental, getRentals, returnRental } from "../Controllers/rentalsController.js";
+
 
 const rentalsRouter = Router();
 
-rentalsRouter.post("/rentals", addRentals)
-rentalsRouter.get("/rentals", getRentals)
+rentalsRouter.get('/rentals', getRentals);
+rentalsRouter.post('/rentals', addRentals);
+rentalsRouter.post('/rentals/:id/return', returnRental);
+rentalsRouter.delete('/rentals/:id', deleteRental);
 
 
 export default rentalsRouter;
