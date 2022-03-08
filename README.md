@@ -16,7 +16,14 @@ This is an web application where it is possible to register games, separate them
 
 ## :hammer: Features
 
-development
+:ballot_box_with_check: `Categories` - GET all games categories and insert a new game catogory.
+
+:ballot_box_with_check: `Games` - GET all games registered in the store, insert a new game.
+
+:ballot_box_with_check: `Customers` - GET all clients, GET a client by it's ID, insert a new client and update a client data.
+
+:ballot_box_with_check: `Rentals` - GET all game rentals, insert a rental, conclude a rental and delete a non concluded rental.
+
 
 ## :woman_technologist: Technologies
 <p align="center">
@@ -24,8 +31,6 @@ development
     <img style='margin: 5px;' src='https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white'>
   <img style='margin: 5px;' src='https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white'>
   <img style='margin: 5px;' src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white"/>
-  <img style='margin: 5px;' src='https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white'>
-  <img style='margin: 5px;' src="https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white"/>
 </p>
 
 ## :tada: How to run
